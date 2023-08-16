@@ -8,11 +8,22 @@ component accessors="true" {
 	function init(clientId, clientSecret) {
 		variables.clientId = arguments.clientId;
 		variables.clientSecret = arguments.clientSecret;
+
+		/*
+		I'm going to cache my access token for 23 hours using CF's cache stuff, but want to ensure
+		I don't conflict with any other instance of this CFC. So our cache key will be based on my
+		name + a UUID
+		*/
+		variables.cacheKey = 'acrobatservices_#createUUID()#';
+
 		return this;
 	}
 
 	public function getAccessToken() {
-		if(structKeyExists(variables, 'accessToken')) return variables.accessToken;
+		//if(structKeyExists(variables, 'accessToken')) return variables.accessToken;
+		var existingToken = cacheGet(variables.cacheKey);
+		if(!isNull(existingToken)) return existingToken;
+
 		var imsUrl = 'https://ims-na1.adobelogin.com/ims/token/v2?client_id=#variables.clientId#&client_secret=#variables.clientSecret#&grant_type=client_credentials&scope=openid,AdobeID,read_organizations';
 		var result = '';
 		
@@ -21,8 +32,8 @@ component accessors="true" {
 		};
 
 		result = deserializeJSON(result.fileContent);
-		variables.accessToken = result.access_token;
-		return variables.accessToken;
+		cachePut(cacheKey, result.access_token, createTimeSpan(0,23,0,0));
+		return result.access_token;
 	}
 
 	/*

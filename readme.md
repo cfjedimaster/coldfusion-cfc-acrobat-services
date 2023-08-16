@@ -11,6 +11,11 @@ Currently the list of supported endpoints is slim, but I'm hoping to add more ov
 * [Document Generation](https://developer.adobe.com/document-services/apis/doc-generation/) - demo may be found in `code/documentgeneration.cfm`
 * [Create PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/) - demo may be found in `code/convert_to_pdf.cfm`
 
+## ColdFusion Requirements
+
+* Caching package
+
 ## History
 
+08/16/2033: Updated access token caching strategy.
 08/16/2033: Created the repository.
