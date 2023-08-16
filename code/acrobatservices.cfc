@@ -106,17 +106,6 @@ component accessors="true" {
 
 	}
 
-	public function createExportJob(assetID, targetFormat, ocrLang="en-US") {
-
-		var body = {
-			"assetID":arguments.assetID,
-			"targetFormat":arguments.targetFormat,
-			"ocrLang":arguments.ocrLang
-		};
-
-		return apiWrapper('/operation/exportpdf', body);
-
-	}
 	public function createDocGenJob(assetID, data, fragments={}, outputformat="pdf") {
 
 		var body = {
@@ -129,7 +118,31 @@ component accessors="true" {
 		return apiWrapper('/operation/documentgeneration', body);
 
 	}
-	
+
+	public function createExportJob(assetID, targetFormat, ocrLang="en-US") {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"targetFormat":arguments.targetFormat,
+			"ocrLang":arguments.ocrLang
+		};
+
+		return apiWrapper('/operation/exportpdf', body);
+
+	}
+
+	public function createOCRJob(assetID, ocrLang="en-US", ocrType="searchable_image") {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"ocrLang":arguments.ocrLang,
+			"ocrType":arguments.ocrType
+		};
+
+		return apiWrapper('/operation/ocr', body);
+
+	}
+
 	public function getJob(jobUrl) {
 		var token = getAccessToken();
 		var result = '';
