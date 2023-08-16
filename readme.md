@@ -6,6 +6,8 @@ You can find the CFC in the [code](/code) folder along with demo files. Note tha
 
 Currently the list of supported endpoints is slim, but I'm hoping to add more over time. As always, PRs are welcome.
 
+For documentation on individual method arguments, check the [REST API documentation](https://developer.adobe.com/document-services/docs/apis/). While my code will have matching arguments, some are enums and will be listed the docs.
+
 ## Supported APIs
 
 * [Auto-Tag PDF](https://developer.adobe.com/document-services/docs/overview/pdf-accessibility-auto-tag-api/) - demo may be found in `code/autotag_pdf.cfm`

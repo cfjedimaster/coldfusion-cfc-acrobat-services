@@ -41,10 +41,9 @@ jsonResult = deserializeJSON(jsonRequest.filecontent);
 
 // lets demo showing the headers
 headers = jsonResult.elements.reduce((value, element) => {
-	if(isNull(value)) value = [];
 	if(element.Path.find('H1')) value.append(element.Text);
 	return value;
-});
+}, []);
 
 writeDump(var=headers,label='Headers from PDF');
 
