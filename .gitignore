@@ -1,3 +1,4 @@
 .env
 output/*.pdf
+output/*.docx
 server.json

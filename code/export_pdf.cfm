@@ -1,9 +1,9 @@
 <!---
-An example of the Create PDF API: https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/
+An example of the Export PDF API: https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/export-pdf/
 --->
 
 <cfscript>
-docpath = expandPath('../sourcefiles/cats.docx');
+docpath = expandPath('../sourcefiles/adobe_security_thing.pdf');
 
 asService = new acrobatservices(clientId=application.CLIENT_ID, clientSecret=application.CLIENT_SECRET);
 
@@ -11,7 +11,7 @@ asset = asService.createAsset(docpath);
 writeoutput('<p>Uploaded asset id is #asset#</p>');
 
 
-pollLocation = asService.createConvertJob(asset);
+pollLocation = asService.createExportJob(asset, 'docx');
 writeoutput('<p>Location to poll is #pollLocation#</p>');
 
 done = false;
@@ -25,8 +25,8 @@ while(!done) {
 
 }
 
-pdfpath = expandPath('../output/cats.pdf');
-asService.downloadAsset(job.asset, pdfpath);
+wordpath = expandPath('../output/adobe_security_thing.docx');
+asService.downloadAsset(job.asset, wordpath);
 	
 
 writeoutput('<p>All done!');

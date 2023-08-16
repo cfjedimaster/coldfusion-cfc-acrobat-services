@@ -19,6 +19,28 @@ component accessors="true" {
 		return this;
 	}
 
+	/*
+	I wrap the api calls, but just the job ones for now. May revisit.
+	*/
+	private function apiWrapper(endpoint, body) {
+		var token = getAccessToken();
+		var result = '';
+		var response = '';
+
+		cfhttp(url=REST_API & arguments.endpoint, method='post', result='result') {
+			cfhttpparam(type='header', name='Authorization', value='Bearer #token#'); 
+			cfhttpparam(type='header', name='x-api-key', value=variables.clientId); 
+			cfhttpparam(type='header', name='Content-Type', value='application/json'); 
+			cfhttpparam(type='body', value=serializeJSON(arguments.body));
+		};
+
+		if(result.responseheader.status_code == 201) return result.responseheader.location;
+		else {
+			response = deserializeJSON(result.filecontent);
+			throw(message='Error response from server: ' & response.error.message);
+		}
+	}
+
 	public function getAccessToken() {
 		//if(structKeyExists(variables, 'accessToken')) return variables.accessToken;
 		var existingToken = cacheGet(variables.cacheKey);
@@ -74,32 +96,28 @@ component accessors="true" {
 	}
 
 	public function createConvertJob(assetID, documentLanguage="en-US") {
-		var token = getAccessToken();
-		var result = '';
-		var response = '';
 
 		var body = {
 			"assetID":arguments.assetID,
 			"documentLanguage":arguments.documentLanguage
 		};
 
-		cfhttp(url=REST_API & '/operation/createpdf', method='post', result='result') {
-			cfhttpparam(type='header', name='Authorization', value='Bearer #token#'); 
-			cfhttpparam(type='header', name='x-api-key', value=variables.clientId); 
-			cfhttpparam(type='header', name='Content-Type', value='application/json'); 
-			cfhttpparam(type='body', value=serializeJSON(body));
+		return apiWrapper('/operation/createpdf', body);
+
+	}
+
+	public function createExportJob(assetID, targetFormat, ocrLang="en-US") {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"targetFormat":arguments.targetFormat,
+			"ocrLang":arguments.ocrLang
 		};
 
-		if(result.responseheader.status_code == 201) return result.responseheader.location;
-		else {
-			response = deserializeJSON(result.filecontent);
-			throw(message='Error response from server: ' & response.error.message);
-		}
+		return apiWrapper('/operation/exportpdf', body);
 
 	}
 	public function createDocGenJob(assetID, data, fragments={}, outputformat="pdf") {
-		var token = getAccessToken();
-		var result = '';
 
 		var body = {
 			"assetID":arguments.assetID,
@@ -108,18 +126,7 @@ component accessors="true" {
 			"fragments":arguments.fragments
 		};
 
-		cfhttp(url=REST_API & '/operation/documentgeneration', method='post', result='result') {
-			cfhttpparam(type='header', name='Authorization', value='Bearer #token#'); 
-			cfhttpparam(type='header', name='x-api-key', value=variables.clientId); 
-			cfhttpparam(type='header', name='Content-Type', value='application/json'); 
-			cfhttpparam(type='body', value=serializeJSON(body));
-		};
-
-		if(result.responseheader.status_code == 201) return result.responseheader.location;
-		else {
-			response = deserializeJSON(result.filecontent);
-			throw(message='Error response from server: ' & response.error.message);
-		}
+		return apiWrapper('/operation/documentgeneration', body);
 
 	}
 	
