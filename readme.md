@@ -27,6 +27,8 @@ Currently the list of supported endpoints is slim, but I'm hoping to add more ov
 
 ## History
 
-08/16/2023: Added Auto-Tag, Extract
-08/16/2023: Updated access token caching strategy, added export and OCR, added apiWraper for job calls.
-08/16/2023: Created the repository.
+| Date | Change |
+|------|-----------|
+| 08/16/2023 | Added Auto-Tag, Extract |
+| 08/16/2023 | Updated access token caching strategy, added export and OCR, added apiWraper for job calls. |
+| 08/16/2023 | Created the repository |
