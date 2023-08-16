@@ -139,6 +139,20 @@ component accessors="true" {
 		return apiWrapper('/operation/exportpdf', body);
 	}
 
+	public function createExtractJob(assetID, getCharBounds=false, includeStyling=false, elementsToExtract=["text"], tableOutputFormat="xlsx", renditionsToExtract=[]) {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"getCharBounds":arguments.getCharBounds, 
+			"includeStyling":arguments.includeStyling,
+			"elementsToExtract":arguments.elementsToExtract, 
+			"tableOutputFormat":arguments.tableOutputFormat,
+			"renditionsToExtract":arguments.renditionsToExtract
+		};
+
+		return apiWrapper('/operation/extractpdf', body);
+	}
+
 	public function createOCRJob(assetID, ocrLang="en-US", ocrType="searchable_image") {
 
 		var body = {
