@@ -1,4 +1,5 @@
 .env
 output/*.pdf
 output/*.docx
+output/*.xlsx
 server.json

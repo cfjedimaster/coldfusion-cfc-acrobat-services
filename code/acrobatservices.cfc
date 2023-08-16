@@ -95,6 +95,17 @@ component accessors="true" {
 		cfhttp(method="get", url=arguments.assetOb.downloadUri, getasbinary=true, result="result", path=dir, file=filename);
 	}
 
+	public function createAutoTagJob(assetID, shiftHeadings=false, generateReport=false) {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"shiftHeadings":arguments.shiftHeadings, 
+			"generateReport":arguments.generateReport
+		};
+
+		return apiWrapper('/operation/autotag', body);
+	}
+
 	public function createConvertJob(assetID, documentLanguage="en-US") {
 
 		var body = {
@@ -103,7 +114,6 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/createpdf', body);
-
 	}
 
 	public function createDocGenJob(assetID, data, fragments={}, outputformat="pdf") {
@@ -116,7 +126,6 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/documentgeneration', body);
-
 	}
 
 	public function createExportJob(assetID, targetFormat, ocrLang="en-US") {
@@ -128,7 +137,6 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/exportpdf', body);
-
 	}
 
 	public function createOCRJob(assetID, ocrLang="en-US", ocrType="searchable_image") {
@@ -140,7 +148,6 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/ocr', body);
-
 	}
 
 	public function getJob(jobUrl) {
@@ -154,7 +161,6 @@ component accessors="true" {
 
 		result = deserializeJSON(result.fileContent);
 		return result;
-
 	}	
 
 }
