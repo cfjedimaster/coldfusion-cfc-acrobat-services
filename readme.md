@@ -12,7 +12,11 @@ For documentation on individual method arguments, check the [REST API documentat
 
 * [Auto-Tag PDF](https://developer.adobe.com/document-services/docs/overview/pdf-accessibility-auto-tag-api/) - demo may be found in `code/autotag_pdf.cfm`
 
+* [Combine PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/combine-pdf/) - demo may be found in `code/combine_pdfs.cfm`
+
 * [Create PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/) - demo may be found in `code/convert_to_pdf.cfm`
+
+* [Create PDF from HTML](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/#create-a-pdf-from-static-html) - demo may be found in `code/html_to_pdf.cfm`
 
 * [Document Generation](https://developer.adobe.com/document-services/apis/doc-generation/) - demo may be found in `code/documentgeneration.cfm`
 
@@ -22,6 +26,7 @@ For documentation on individual method arguments, check the [REST API documentat
 
 * [OCR PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/ocr-pdf/) - demo may be found in `code/ocr_pdf.cfm`
 
+* [Protect PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/protect-pdf/) - demo may be found in `code/protect_pdf.cfm`
 
 ## ColdFusion Requirements
 
@@ -31,6 +36,7 @@ For documentation on individual method arguments, check the [REST API documentat
 
 | Date | Change |
 |------|-----------|
+| 08/18/2023 | Added Create from HTML, Protect PDF, Combine PDF |
 | 08/16/2023 | Added Auto-Tag, Extract |
 | 08/16/2023 | Updated access token caching strategy, added export and OCR, added apiWraper for job calls. |
 | 08/16/2023 | Created the repository |

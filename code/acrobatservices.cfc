@@ -106,6 +106,39 @@ component accessors="true" {
 		return apiWrapper('/operation/autotag', body);
 	}
 
+	public function createCombineJob(required array assets) {
+
+		/*
+		So the combine API lets you pass an array of assets where each asset may have a property called
+		'pageRanges' which is an array of objects with start and end values. I think for now we will just
+		take in the user input - may add validation later.
+
+		Nope, need to rewrite the input. Leaving these comments here as I think I may need to come back to it later.
+		*/
+		var body = {
+			"assets": []
+		};
+
+		arguments.assets.each(b => {
+			if(isSimpleValue(b)) body["assets"].append({ "assetID": b });
+			else {
+				var newA = {
+					"assetID":b.assetID, 
+					"pageRanges":[]
+				};
+				b.pageRanges.each(p => {
+					newA.pageRanges.append({
+						"start":p.start, 
+						"end":p.end
+					})
+				});
+				body["assets"].append(newA);
+			}
+		});
+
+		return apiWrapper('/operation/combinepdf', body);
+	}
+
 	public function createConvertJob(assetID, documentLanguage="en-US") {
 
 		var body = {
@@ -114,6 +147,24 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/createpdf', body);
+	}
+
+	public function createConvertHTMLJob(assetID="", inputUrl="", json="", includeHeaderFooter=false, pageLayout={}) {
+
+		/*
+		This one is a bit more complex as asset can be blank and inputUrl can be passed.
+		*/
+		var body = {};
+
+		if(assetID != "") body["assetID"] = arguments.assetID;
+		else if(inputUrl != "") body["inputUrl"] = arguments.inputUrl;
+		else throw("Either assetID or inputUrl must be passed.");
+
+		if(arguments.json != "") body["json"] = arguments.json;
+		body["includeHeaderFooter"] = arguments.includeHeaderFooter;
+		if(!structIsEmpty(arguments.pageLayout)) body["pageLayout"] = arguments.pageLayout;
+
+		return apiWrapper('/operation/htmltopdf', body);
 	}
 
 	public function createDocGenJob(assetID, data, fragments={}, outputformat="pdf") {
@@ -162,6 +213,28 @@ component accessors="true" {
 		};
 
 		return apiWrapper('/operation/ocr', body);
+	}
+
+	public function createProtectJob(assetID, ownerPassword="", userPassword="", encryptionAlgorithm, contentToEncrypt="ALL_CONTENT", permissions = []) {
+
+		if(arguments.ownerPassword == "" and arguments.userPassword == "") {
+			cfthrow(message="You must pass either ownerPassword or userPassword.");
+		}
+
+		var body = {
+			"assetID":arguments.assetID
+		};
+
+		if(arguments.ownerPassword != "") {
+			body["passwordProtection"] = { "ownerPassword": arguments.ownerPassword };
+		} else {
+			body["passwordProtection"] = { "userPassword": arguments.userPassword };
+		}
+
+		body["encryptionAlgorithm"] = arguments.encryptionAlgorithm;
+		body["contentToEncrypt"] = arguments.contentToEncrypt;
+		if(!arrayIsEmpty(arguments.permissions)) body["permissions"] = arguments.permissions;
+		return apiWrapper('/operation/protectpdf', body);
 	}
 
 	public function getJob(jobUrl) {
