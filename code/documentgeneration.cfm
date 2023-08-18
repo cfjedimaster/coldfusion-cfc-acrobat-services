@@ -42,6 +42,7 @@ for(person in prospectives) {
 	while(!done) {
 		job = asService.getJob(pollLocation);
 		writedump(var=job, label="Latest job status");
+		cfflush();
 
 		if(job.status == 'in progress') {
 			sleep(2 * 1000);

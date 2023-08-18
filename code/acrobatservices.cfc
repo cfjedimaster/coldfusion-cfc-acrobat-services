@@ -139,6 +139,16 @@ component accessors="true" {
 		return apiWrapper('/operation/combinepdf', body);
 	}
 
+	public function createCompressJob(assetID, compressionLevel="MEDIUM") {
+
+		var body = {
+			"assetID":arguments.assetID,
+			"compressionLevel":arguments.compressionLevel
+		};
+
+		return apiWrapper('/operation/compresspdf', body);
+	}
+
 	public function createConvertJob(assetID, documentLanguage="en-US") {
 
 		var body = {

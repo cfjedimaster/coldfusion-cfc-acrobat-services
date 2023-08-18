@@ -1,9 +1,9 @@
 <!---
-An example of the OCR PDF API: https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/ocr-pdf/
+An example of the Compress PDF API: https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/compress-pdf/
 --->
 
 <cfscript>
-docpath = expandPath('../sourcefiles/pdf_that_needs_ocr.pdf');
+docpath = expandPath('../sourcefiles/cats.pdf');
 
 asService = new acrobatservices(clientId=application.CLIENT_ID, clientSecret=application.CLIENT_SECRET);
 
@@ -11,7 +11,7 @@ asset = asService.createAsset(docpath);
 writeoutput('<p>Uploaded asset id is #asset#</p>');
 
 
-pollLocation = asService.createOCRJob(asset);
+pollLocation = asService.createCompressJob(asset);
 writeoutput('<p>Location to poll is #pollLocation#</p>');
 
 done = false;
@@ -19,16 +19,18 @@ while(!done) {
 	job = asService.getJob(pollLocation);
 	writedump(var=job, label="Latest job status");
 	cfflush();
-
 	if(job.status == 'in progress') {
 		sleep(2 * 1000);
 	} else done = true;
 
 }
 
-pdfpath = expandPath('../output/pdf_that_is_now_ocr.pdf');
+pdfpath = expandPath('../output/pdf_that_is_now_compressed.pdf');
 asService.downloadAsset(job.asset, pdfpath);
-	
-writeoutput('<p>All done!');
+
+size1 = getFileInfo(docPath).size;
+size2 = getFileInfo(pdfPath).size;
+diff = size2-size1;
+writeoutput('<p>All done!<br/>File size of initial PDF is #size1#.<br/>Size of compressed PDF is #size2#.<br/>Difference is #diff#.');
 </cfscript>
 

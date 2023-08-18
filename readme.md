@@ -14,6 +14,8 @@ For documentation on individual method arguments, check the [REST API documentat
 
 * [Combine PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/combine-pdf/) - demo may be found in `code/combine_pdfs.cfm`
 
+* [Compress PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/compress-pdf/) - demo may be found in `code/compress_pdf.cfm`
+
 * [Create PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/) - demo may be found in `code/convert_to_pdf.cfm`
 
 * [Create PDF from HTML](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/create-pdf/#create-a-pdf-from-static-html) - demo may be found in `code/html_to_pdf.cfm`
@@ -36,6 +38,7 @@ For documentation on individual method arguments, check the [REST API documentat
 
 | Date | Change |
 |------|-----------|
+| 08/18/2023 | Added Compressed, added cfflush to most demos |
 | 08/18/2023 | Added Create from HTML, Protect PDF, Combine PDF |
 | 08/16/2023 | Added Auto-Tag, Extract |
 | 08/16/2023 | Updated access token caching strategy, added export and OCR, added apiWraper for job calls. |
