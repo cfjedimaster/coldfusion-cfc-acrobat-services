@@ -27,6 +27,19 @@ component accessors="true" {
 		var result = '';
 		var response = '';
 
+		/*
+		New support for external storage is basically - if asset is a struct, we reshape body a bit.
+		*/
+		if(isStruct(arguments.body.assetID)) {
+			validateExternalStorage(arguments.body.assetID);
+			var newBody = { };
+			newBody['input'] = { 'uri': arguments.body.assetID.input };
+			newBody['output'] = { 'uri': arguments.body.assetID.output };
+			arguments.body.delete('assetID');
+			newBody['params'] = arguments.body;
+			arguments.body = newBody;
+		};
+
 		cfhttp(url=REST_API & arguments.endpoint, method='post', result='result') {
 			cfhttpparam(type='header', name='Authorization', value='Bearer #token#'); 
 			cfhttpparam(type='header', name='x-api-key', value=variables.clientId); 
@@ -42,7 +55,6 @@ component accessors="true" {
 	}
 
 	public function getAccessToken() {
-		//if(structKeyExists(variables, 'accessToken')) return variables.accessToken;
 		var existingToken = cacheGet(variables.cacheKey);
 		if(!isNull(existingToken)) return existingToken;
 
@@ -189,10 +201,21 @@ component accessors="true" {
 		return apiWrapper('/operation/documentgeneration', body);
 	}
 
-	public function createExportJob(assetID, targetFormat, ocrLang="en-US") {
+	public function createExportJob(asset, targetFormat="", ocrLang="en-US") {
+
+		/*
+		Target format is now optional if our asset is a complex object (ie, external storage).
+		Note that validation is done in apiWrapper too, but as I need to ensure output exists, 
+		I call it here as well.
+		*/
+		if(isStruct(arguments.asset)) {
+			validateExternalStorage(arguments.asset);
+			var outputURL = arguments.asset.output.listGetAt(1, '?');
+			arguments.targetFormat = listToArray(outputURL,'.').last();
+		}
 
 		var body = {
-			"assetID":arguments.assetID,
+			"assetID":arguments.asset,
 			"targetFormat":arguments.targetFormat,
 			"ocrLang":arguments.ocrLang
 		};
@@ -260,4 +283,12 @@ component accessors="true" {
 		return result;
 	}	
 
+	/*
+	This is to help support external storage operations supported by the API. For right now, 
+	it's simply validating on two required keys, but I may change in the future.
+	*/
+	private function validateExternalStorage(ob) {
+		if(!ob.keyExists('input')) throw(message='Asset for external storage must contain an input key.');
+		if(!ob.keyExists('output')) throw(message='Asset for external storage must contain an output key.');
+	}
 }

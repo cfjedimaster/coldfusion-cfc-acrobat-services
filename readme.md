@@ -30,14 +30,30 @@ For documentation on individual method arguments, check the [REST API documentat
 
 * [Protect PDF](https://developer.adobe.com/document-services/docs/overview/pdf-services-api/howtos/protect-pdf/) - demo may be found in `code/protect_pdf.cfm`
 
+## External Storage
+
+In August of 2023, Adobe added 'external' file support to many of the APIs. This supports S3, Dropbox, Azure, and Sharepoint. It is not currently supported for a few of the APIs, but works in most. I've modified the core CFC to 'auto' 
+detect when this is in use and built one demo, `code/external_test_1.cfm`. To use, create an asset structure like so:
+
+```json
+{
+	"input":"readable url generated from S3, Dropbox, etc", 
+	"output":"writable url generated from ..."
+}
+```
+
+The CFC should automatically see this and handle it. Note the end result from the job will not have a location header as it's supplied by your input asset.
+
 ## ColdFusion Requirements
 
-* Caching package
+* Caching package.
+* For the external support demo, the S3 package is required, but again, this is just the demo.
 
 ## History
 
 | Date | Change |
 |------|-----------|
+| 09/07/2023 | Added initial support for external files |
 | 08/18/2023 | Added Compressed, added cfflush to most demos |
 | 08/18/2023 | Added Create from HTML, Protect PDF, Combine PDF |
 | 08/16/2023 | Added Auto-Tag, Extract |
